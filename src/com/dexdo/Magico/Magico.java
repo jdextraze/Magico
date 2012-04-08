@@ -2,6 +2,11 @@ package com.dexdo.Magico;
 
 import java.util.logging.Logger;
 
+import org.bukkit.Material;
+import org.bukkit.Server;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,8 +21,50 @@ public class Magico extends JavaPlugin {
 		log.info("The Magico plugin has been enabled!");
 		
 		registerEvents();
+		addRecipes();
 	}
 	
+	private void addRecipes() {
+		Server server = getServer();
+		server.addRecipe(getWandRecipe());
+		server.addRecipe(getCobblestoneToIronRecipe());
+		server.addRecipe(getIronToGoldRecipe());
+		server.addRecipe(getGoldToDiamondRecipe());
+	}
+
+	private Recipe getGoldToDiamondRecipe() {
+		ShapedRecipe recipe = new ShapedRecipe(new ItemStack(Material.DIAMOND, 1));
+		recipe.shape("GGG", "GRG", "GGG");
+		recipe.setIngredient('G', Material.GOLD_INGOT);
+		recipe.setIngredient('R', Material.REDSTONE);
+		return recipe;
+	}
+
+	private Recipe getIronToGoldRecipe() {
+		ShapedRecipe recipe = new ShapedRecipe(new ItemStack(Material.GOLD_INGOT, 1));
+		recipe.shape("III", "IRI", "III");
+		recipe.setIngredient('I', Material.IRON_INGOT);
+		recipe.setIngredient('R', Material.REDSTONE);
+		return recipe;
+	}
+
+	private Recipe getCobblestoneToIronRecipe() {
+		ShapedRecipe recipe = new ShapedRecipe(new ItemStack(Material.IRON_INGOT, 1));
+		recipe.shape("CCC", "CRC", "CCC");
+		recipe.setIngredient('C', Material.COBBLESTONE);
+		recipe.setIngredient('R', Material.REDSTONE);
+		return recipe;
+	}
+
+	private Recipe getWandRecipe() {
+		ShapedRecipe recipe = new ShapedRecipe(new ItemStack(Material.REDSTONE_TORCH_OFF, 1));
+		recipe.shape(" D ", "DRD", " S ");
+		recipe.setIngredient('D', Material.DIAMOND);
+		recipe.setIngredient('R', Material.REDSTONE);
+		recipe.setIngredient('S', Material.STICK);
+		return recipe;
+	}
+
 	private void registerEvents() {
 		PluginManager pm = getServer().getPluginManager();
 		
@@ -28,11 +75,5 @@ public class Magico extends JavaPlugin {
 	public void onDisable() {
 		log.info("The Magico plugin has been disabled");
 	}
-	
-	/*
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		return false;
-	}
-	*/
 
 }
